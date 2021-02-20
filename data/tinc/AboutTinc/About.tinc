@@ -1,0 +1,40 @@
+/这是tinc的基本功能，只要是显示版本号
+/tinc拓展只能在data\tinc目录。里面除了test.tinc，其余文件夹、文件、函数都应该按照命名规范
+/在TinShell输入help []即可查看有关TinShell和tinc的信息
+
+$ PrintNowVer []{
+set [
+ver
+ver []
+]
+
+set [
+reword
+addword [TinShell当前版本为-|ver|-]
+]
+
+print [reword]
+}
+
+
+$ GetNewVer [%name%]{
+set [
+ver
+newver []
+]
+
+set [
+returnword
+addword [%name%>>>-|ver|-]
+]
+}
+
+
+$ PrintNewVer []{
+set [
+word
+GetNewVer [Tin的最新版本]
+]
+
+print [word]
+}

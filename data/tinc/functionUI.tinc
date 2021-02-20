@@ -1,0 +1,39 @@
+/通过组件定义函数
+
+require[ui\window]
+funcname[CreateWindow|cw]
+funcname[UsWin|uw]
+funcname[CreateWidget|cwg]
+funcname[Bind|bind]
+/cw：创建窗口
+/uw：使用组件
+/cwg：创建组件
+/bind：绑定组件函数
+
+$ in_function []{
+py_eval [
+funcname=uidict.get('fname').get()
+funcw=uidict.get('ftext').get(1.0,'end')
+funit=list(('$ '+funcname+'{',''))
+for i in funcw.split('\n'):
+    funit.append(i)
+funit.append('}')
+StartCode(funit)
+]
+}
+
+cw[fa|TinShell函数定义UI|500x700+200+50]
+uw[fa|iconbitmap|TinPath+'\\Tin.ico']
+
+cwg[flabel|tk.Label|fa|text='函数名及参数>>>',font=('微软雅黑',12)]
+uw[flabel|pack|side='left',anchor='n']
+
+cwg[fname|tk.Entry|fa|width=32,font=('微软雅黑',12),fg='darkblue']
+uw[fname|pack|side='left',anchor='n']
+
+cwg[fbutton|ttk.Button|fa|text='定义']
+uw[fbutton|pack|side='left',anchor='n']
+bind[fbutton|<Button-1>|in_function|]
+
+cwg[ftext|tk.scrolledtext.ScrolledText|fa|font=('微软雅黑',11)]
+uw[ftext|place|x=0,y=30,width=500,height=650]

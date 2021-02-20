@@ -1,0 +1,31 @@
+/百度搜索
+
+set[
+baidu
+http://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&ch=3&tn=98012088_4_dg&wd=
+]
+
+/获取要搜索的内容
+set[
+que
+input[百度搜索|在下方输入您想要通过百度搜索引擎搜索的内容：]
+]
+
+$ GoBaidu [%word%]{
+print[going baidu...]
+tinpaint[<middle>正在搜索：;_%word%]
+set[
+url
+addword[baidu|%word%]
+]
+%web\open\Open [url]
+}
+
+
+set[
+isurl
+addword['|que|'!='None']
+]
+
+if[isurl|GoBaidu|que]
+print[程序结束……]

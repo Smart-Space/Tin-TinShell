@@ -1,0 +1,56 @@
+/操作字典
+
+/head_function
+$ DICT_GETDICT_INIT []{
+print [dict\getdict.tinc]
+print [-GetDictUnit]
+print [-GetDictKeys]
+print [-GetDictValues]
+print [-]
+}
+
+
+/name：字典名称
+/key：键
+//获取该字典的某个键值
+$ GetDictUnit [%name%|%key%]{
+py_eval[
+try:
+    dict_=dict_glo.get('%name%')
+    reword=dict_.get('%key%')
+except Exception as err:
+    print('字典名称和键值出错: '+str(err))
+else:
+    glo['returnword']=reword
+]
+}
+
+/name：字典名称
+/list_name：生成的列表名称
+//获取该字典的所有键
+$ GetDictKeys [%name%|%list_name%]{
+py_eval[
+try:
+    keys_list=list(dict_glo['%name%'].keys())
+except:
+    print('字典名称不存在：'+'%name%')
+else:
+    list_glo['%list_name%']=keys_list
+    glo['returnword']='None'
+]
+}
+
+/name：字典名称
+/list_name：生成的列表名称
+//获取该字典的所有值
+$ GetDictValues [%name%|%list_name%]{
+py_eval[
+try:
+    keys_list=list(dict_glo['%name%'].values())
+except:
+    print('字典名称不存在：'+'%name%')
+else:
+    list_glo['%list_name%']=keys_list
+    glo['returnword']='None'
+]
+}

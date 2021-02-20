@@ -1,0 +1,14 @@
+/显示字典
+
+/head_function
+$ DICT_PRINTDICT_INIT []{
+print [dict\printdict.tinc]
+print [-PrintDict]
+print [-]
+}
+
+$ PrintDict [%name%]{
+py_eval[
+print(dict_glo['%name%'])
+]
+}

@@ -1,0 +1,18 @@
+/格式化字符
+
+/head_function
+$ WORD_Format_INIT []{
+print [word\format.tinc]
+print [-Format]
+print [-]
+}
+
+/普通格式化字符
+$ Format [%str%|%strlist%] {
+py_eval[
+str='%str%'
+list='%strlist%'.split(',')
+reword=str.format(*list)
+glo.update({'returnword':reword})
+]
+}

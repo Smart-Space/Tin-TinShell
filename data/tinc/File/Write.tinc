@@ -1,0 +1,6 @@
+/提供写入文本更多的功能
+
+/head_function
+$ FILE_WRITE_INIT []{
+print [-]
+}

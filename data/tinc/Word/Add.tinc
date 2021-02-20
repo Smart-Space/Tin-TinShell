@@ -1,0 +1,60 @@
+/对字符进行拼接
+/各字符中间使用指定文字连接
+
+/head_function
+$ WORD_ADD_INIT []{
+print [word\add.tinc]
+print [-AddWord2]
+print [-AddWord3]
+print [-]
+}
+
+
+/自定义连接字符，如果AddWord2的%add%为空，就用这里赋值的拼接字符
+$ AddChr [%add%]{
+py_eval[
+add='%add%'
+glo.update({'WORD_ADD_ADDCHR':add})
+]
+}
+
+
+/word之间使用“%”分割
+/word之间用add拼接
+$ AddWord2 [%add%|%word%]{
+py_eval[
+add=glo.get('WORD_ADD_ADDCHR')
+if '%add%'=='glo':#如果拼接参数是“glo”则使用以默认的参数
+    if add==None:
+        error('\nWORD_ADD_ADDCHR is not called, you need to place a %<add>% valua')
+        #如果报错，说明全局变量中没有 WORD_ADD_ADDCHR。
+else:
+   add='%add%'
+if add!=None:
+    words='%word%'.split('%')
+    word=''
+    for i in words:
+        word=word+i+add
+    glo.update({'returnword':word[:-len(add)]})
+]
+}
+
+
+/add，word之间用“%”分割。这里的add不受WORD_ADD_ADDCHR的限制
+$ AddWord3 [%add%|%word%]{
+py_eval[
+add='%add%'.split('%')
+words='%word%'.split('%')
+word=''
+add_max=len(add)-1
+add_num=0
+for i in words:
+    word=word+i+add[add_num]+''
+    if add_num!=add_max:
+        add_num+=1
+    else:
+        add_num=0
+add_chr=len(add[add_num])
+glo.update({'returnword':word[:-add_chr]})
+]
+}

@@ -1,0 +1,24 @@
+/提供读取文本更多的功能
+
+/head_function
+$ FILE_READ_INIT []{
+print [-ReadLines]
+print [-]
+}
+
+$ use_split [%name%|%words%]{
+%word\split\Split2 [%name%|%words%|\n]
+}
+
+/name：列表名称
+/file：读取的文件
+/type：文本编码类型
+//这将返回一个以每一行为单位的列表
+$ ReadLines [%name%|%file%|%type%]{
+print [%file%]
+set [
+word
+readfile[%file%|%type%]
+]
+use_split [%name%|word]
+}

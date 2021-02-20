@@ -1,0 +1,50 @@
+/检测更新
+require [word\change]
+
+/获取版本差别
+set [
+now
+ver[]
+]
+set[
+now_ver_str
+addword[<middles>_|now|==blue==]
+]
+tinpaint [<middle>当前版本：|now_ver_str|<sp>2]
+/获得数字信息，下同
+set [
+v1
+ChangeWord[now|.|]
+]
+set [
+new
+newver[]
+]
+/输出最新版本号
+set[
+new_ver_str
+addword[<middles>_|new|==red==]
+]
+tinpaint [<middle>检测版本：|new_ver_str|<sp>2]
+set [
+v2
+ChangeWord[new|.|]
+]
+
+$ printnew [%newv%]{
+tinpaint [<middle>检测到最新版本：|new_ver_str|<middle>，;*请通过TinUpgrader升级]
+}
+$ printnow [%none%]{
+tinpaint [<main>恭喜您！您现在正在使用最新版本的 TinGroup！]
+}
+
+set[
+a
+addword[v1|<|v2]
+]
+set[
+b
+addword[not |a]
+]
+if [a|printnew|new]
+if [b|printnow|none]

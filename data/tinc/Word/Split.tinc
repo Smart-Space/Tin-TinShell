@@ -1,0 +1,37 @@
+/分割字符
+
+/head_function
+$ WORD_SPLIT_INIT []{
+print [word\split.tinc]
+print [-Split]
+print [-Split2]
+}
+
+
+/逐字分割字符
+/name: 列表名称
+/word: 分割的内容
+$ Split [%name%|%word%]{
+py_eval[
+l='%name%'
+w='%word%'
+r=list()
+for i in w:
+    r.append(i)
+list_glo.update({l:r})
+]
+}
+
+
+/根据chr分割word
+/name: 列表名称
+/word: 分割的内容
+/chr: 分割字符
+$ Split2 [%name%|%word%|%chr%]{
+py_eval[
+l='%name%'
+w='''%word%'''
+c='%chr%'
+list_glo.update({l:w.split(c)})
+]
+}

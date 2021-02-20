@@ -1,0 +1,41 @@
+/这个文件夹是TinShell原生外部命令库，使用%command_name [args]即可调用
+/在command_name中可以有“/”来调用文件夹内文件和单个文件的函数。本文件可以用%test/printver []调用printver函数
+
+#这是TinShell的试验文本，在输入框按下快捷键<Control-g>会执行此脚本
+
+#你可以删除下面之一段被注释的命令开头的“/”和“#”，这样就会执行这一段命令
+/set [
+/word
+/readfile [C:\Users\Lenovo\Desktop\py-unit\TinGroup信息\软件说明.tins|utf-8]
+/]
+#print [word]
+
+
+#本命令集的功能是显示最新版本，需要网络
+$ printver []{
+set [
+ver
+newver []
+]
+set [
+nowver
+addword [Tin的最新版本为 -|ver|-]
+]
+print [nowver]
+}
+
+#在本文件被调用时，解释器会执行整个文件，注册函数，所以下面命令需要被注释
+printver []
+
+$ test1[%t%]{
+stop [3]
+print[this is function1]
+}
+
+$ test2[]{
+print[this is function2]
+}
+
+%process\thread|TST [test1|t]
+stop[1]
+test2[]

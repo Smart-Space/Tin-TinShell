@@ -1,0 +1,19 @@
+/获取网页源码
+
+/head_function
+$ WEB_GETHTML_INIT []{
+print [web\gethtml.tinc]
+print [-GetHtml]
+print [-]
+}
+
+$ GetHtml [%url%]{
+py_eval [
+import requests
+url='%url%'
+res=requests.get(url)
+res.encoding = res.apparent_encoding
+text=res.text
+glo.update({'returnword':text.replace('\n','')})
+]
+}

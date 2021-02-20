@@ -1,0 +1,44 @@
+/操作列表
+
+/head_function
+$ LIST_GETLIST_INIT []{
+print [list\getlist.tinc]
+print [-GetListUnit]
+print [-GetList]
+print [-]
+}
+
+
+/获取列表，重新命名
+/new_name: the new name that haven't been used
+/old_name: the name of the list witch is used
+$ GetList [%new_name%|%old_name%]{
+py_eval[
+on='%old_name%'
+name='%new_name%'
+if on not in list_glo.keys():
+    error('\nthere is no list named '+on)
+else:
+    list_glo.update({name:list_glo.get(on)})
+]
+}
+
+
+/获取列表的一个值，其实为0，最后为-1
+/list: the name of a list
+/num: the numTH unit of the list witch named arg-list
+$ GetListUnit [%list%|%num%]{
+py_eval[
+li='%list%'
+num=%num%#必须是数字
+if li not in list_glo.keys():
+    error('\nthere is no list named '+li)
+else:
+    li=list_glo.get(li)
+    if len(li)<num:
+        error('\nthe more asked than the units of the list')
+    else:
+        reword=li[num]
+        glo.update({'returnword':reword})
+]
+}

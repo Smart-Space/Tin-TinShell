@@ -1,0 +1,22 @@
+/操作Json
+
+/head_function
+$ JSON_JSON_INIT []{
+print [json\json.tinc]
+print [-LoadStr]
+print [-]
+}
+
+
+/str：要转换的字典
+/dict：返回字典的名称
+$ LoadStr [%str%|%dict%]{
+py_eval[
+import json
+try:
+    dictn=json.loads('''%str%''')
+    dict_glo['%dict%']=dictn
+except Exception as err:
+    print(err)
+]
+}

@@ -1,0 +1,27 @@
+/打开网页
+
+/head_function
+$ WEB_OPEN_INIT []{
+print [web\open.tinc]
+print [-Open]
+print [-OpenNew]
+print [-]
+}
+
+/打开一个网页
+$ Open [%url%]{
+py_eval [
+from webbrowser import open as webopen
+url='%url%'
+webopen(url)
+]
+}
+
+/打开一个新的网页
+$ OpenNew [%url%]{
+py_eval [
+import webbrowser
+url='%url%'
+webbrowser.open_new_tab(url)
+]
+}

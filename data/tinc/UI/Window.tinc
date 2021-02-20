@@ -1,0 +1,77 @@
+/创建窗口基本操作。使用tkinter
+
+/head_function
+$ UI_WINDOW_INIT []{
+print [ui\window.tinc]
+print [-CreateWindow]
+print [-UsWin]
+print [-CreateWidget]
+print [-Bind]
+print [-]
+}
+
+/winname: 窗口变量名称，在UsWin中用到
+/title: 窗口标题
+/size: 窗口大小。宽x高[+顶端横距离[+顶端纵距离]]
+$ CreateWindow [%winname%|%title%|%size%]{
+py_eval[
+title='%title%'
+name='%winname%'
+if name=='':
+    print('the name of the window can not be ""')
+else:
+    %winname%=Tk()
+    %winname%.geometry('%size%')
+    %winname%.title(title)
+    uidict.update({name:%winname%})
+]
+}
+
+/创建组件
+/name: 组件名称
+/widget: 组件类
+/parent: 父组件
+/option: 组件参数
+$ CreateWidget [%name%|%Widget%|%parent%|%option%]{
+py_eval[
+name='%name%'
+if name=='':
+    print('the name of the widget can not be ""')
+else:
+    %name%=%Widget%(uidict['%parent%'],%option%)
+    uidict.update({name:%name%})
+]
+}
+
+/使用组件函数
+/name: 组件名称
+/function: 组件函数
+/option: 方法参数
+$ UsWin [%name%|%function%|%option%]{
+py_eval[
+name='%name%'
+if name not in uidict.keys():
+    print('no widget named '+name)
+else:
+    wgt=uidict[name]
+    rew=wgt.%function%(%option%)
+    if rew!=None:
+        glo.update({'returnword':str(rew)})
+]
+}
+
+/绑定tinc函数
+/name：组件名称
+/event：绑定事件
+/fun：绑定函数
+/option：参数，使用英文分号","分割
+$ Bind [%name%|%event%|%fun%|%option%]{
+py_eval[
+name='%name%'
+if name not in uidict.keys():
+    print('no widget named '+name)
+else:
+    wgt=uidict[name]
+    wgt.bind('%event%',lambda event: StartCode(['%fun%['+'%option%'.replace(',','@VEB@')+']']))
+]
+}

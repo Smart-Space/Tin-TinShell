@@ -1,0 +1,18 @@
+/正则匹配
+
+/head_function
+$ RE_RE_INIT []{
+print [re\re.tinc]
+print [-ReAll]
+print [-]
+}
+
+require[list\getlist]
+
+/返回能够匹配的列表，而不是值
+$ ReAll [%listname%|%sub%|%str%]{
+py_eval[
+li=re.findall('%sub%','''%str%''',re.S)
+list_glo['%listname%']=li
+]
+}

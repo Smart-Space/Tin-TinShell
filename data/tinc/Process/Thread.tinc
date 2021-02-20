@@ -1,0 +1,20 @@
+/基于cpython的多线程使用
+
+/head_function
+$ PROCESS_THREAD_INIT []{
+print [-TST]
+}
+
+/*thread start*/
+/function：执行的函数名称
+/option：参数，使用英文逗号（,）分割
+//开启一个多线程
+$ TST [%function%|%option%]{
+py_eval[
+option='''%option%'''.replace(',','\n')
+fin='%function%[\n'+option+'\n]'
+fin=fin.split('\n')
+tst=threading.Thread(target=StartCode,args=(fin,))
+tst.start()
+]
+}

@@ -1,0 +1,228 @@
+这里是TinSetter附属程序TinGroup-shell的使用说明
+1、介绍
+跟其它的shell一样，TinGroup-shell也是一个控制台窗口，只不过专门负责控制有关Tin的进程和功能。
+TinShell使用的tinc语言，是一个函数式的脚本命令式语言
+注意：
+①、TinShell对大小写敏感。大写为外部命令
+②、TinShell不允许单行多命令或嵌套命令，如果用嵌套命令需要使用多行，并且只能有一个嵌套
+③、TinShell优先执行原生命令
+
+
+2、语法
+一般规定：
+一般语法格式：命令 [arg1|arg2|arg3|...]
+即使是没有参数要求的命令，如 exit，也要使用 "exit []"
+参数使用“|”分割，其中，“|” 用 @VEB@ 代替
+
+多行参数：
+在注意事项③中，单行命令不能嵌套，多行命令参数只能包含一个额外命令，这是为了保持清晰度而设定的
+比如在 set [...]中（最常用）：
+set [
+a
+print [tinshell]
+]
+因此，多个赋值不能并用，必须分步执行命令。在TinShell中，无论是交互界面还是执行器，都不允许无参数
+指令多行显示
+
+注释：
+#：在一行命令的开头，顺序在单个命令多行参数后
+/：在一行命令的开头，顺序在单个命令多行参数前。解释器不会执行这一行，不受其它限制
+
+帮助格式：
+在下面的帮助文档中，格式为：（其中参数，返回值不一定有）
+(命令) (参数)
+/(参数含义和说明)
+...
+//(作用)
+==(返回值)
+
+函数：
+函数也被引入到TinShell中，称为自定义命令，用于多命令的集合。函数中可以有多行参数的命令，
+但是同样的，多行参数命令不能嵌套。以<多行参数>中的内容为例，格式如下：
+$ function_name [args...]{
+set [
+a
+print [tinshell]
+]
+}
+print [a]
+其中参数的格式继承*.tins拓展文件，为：[%arg1%|%arg2%|%arg3%|...]
+TinShell执行自定义命令后的返回值是全局变量中的returnword，因此如果函数需要返回值，在函数末尾通过set []
+更改returnword的值，再通过调用returnword变量获取函数返回值。returnword不会主动更新
+虽然有时可以一次性完成并返回 returnword，但仍然建议最后一个命令片段进行返回值操作
+
+外部命令调用：
+外部脚本的目录必须在 date\tinc\ 下，以免发生危害系统的行为发生。TinShell会预先判断外部文件中是否存在这个函数
+在该目录下，有一个test.tinc的文件，其中有 printver 自定义函数，调用方法如下：
+%test/printver []
+使用“%”开头即可，中间使用“/”或“\”指定路径
+需要注意的是，使用方法只能调用tinc拓展中的一个函数，并且该函数内部不能直接调用该文件函数
+该方法适合调用外部Tinc的基层函数，如果想要使用全部函数，可以使用 require [tinc_file]
+
+命名规范（建议）：
+原生命令有若干单词拼接，无空格，全部小写
+执行脚本内自定义命令（函数）若干单词拼接，无空格，全部小写
+外部命令（外部函数）路径、文件名、函数名若干单词拼接，无空格，各名称的各单词首字母大写
+
+空格：
+任何函数、命令必须顶格写。函数定义符号、起始号，命令的参数，这些文字与命令名称的空格可以没有，也可使有多个空格，
+但建议是不空格或空一格
+
+
+3、默认全局变量
+glo={'TinPath':TinPath,#本文件目录
+     'Tinc':TinPath+'\\date\\Tinc\\',#tinc额外目录
+     'ABOUT':'TinShell is for developers of TinGroup',#基本信息
+     'returnword':'NONE',#函数返回值
+}#全局变量表
+
+
+4、帮助
+
+require [test]
+//执行data目录下的test.tinc，用于测试你的tinc代码，这个文件由tinc编写
+
+require [functionUI]
+//执行data目录下的functionUI.tinc，用于以图形界面定义一个函数
+//因为在TinShell图形界面下无法定义函数，所以可以通过functionUI.tinc来定义函数，这个文件由tinc编写
+
+addword [chr...]
+/chr：要整合的字符
+//将所有的参数字符整合在一起。可以通过 set []赋值
+==整合后的字符
+
+cmd [command]
+/command：cmd命令
+//执行cmd命令并返回一定的值
+==cmd返回值
+
+calc [math]
+/math：数学算式
+//运算数学算式
+==运算结果
+
+date []
+//显示本月月历
+==本日日期
+
+dict [name|key=var...]
+/name：字典名称
+/key和var的参数可以是很多个，每个的格式是：键=值
+//键和值中间的等号两边可以有多个空格，如果有多个等号，则从第一个等号分割键和值
+//这将生成一个字典。使用Dict库进行进一步操作
+
+eval [tinc...]
+/tinc：TinShell命令，不建议嵌套
+//执行单个TinShell命令,单个命令使用“%”分开
+
+evalfile [file]
+/file：*.tinc文件
+//执行tinc文件
+
+exit []
+//退出tin-shell
+==退出信息
+
+github []
+//TinShell的开源地址
+==GitHub网址
+
+funcname [oldfunc|newfunc]
+/oldfunc：原有的外部函数
+/newfunc：定义一个新名字
+//给载入的外部函数定义一个新的函数名，原函数名将无效
+
+function [...]
+/...：可以为空，也可以是多个参数
+//如果过为空，则返回可以使用的外部函数；如果过不为空，则返回每一个外部函数是否存在（True/False）
+==其中一个结果
+
+help []
+//显示该文本
+==该文本内容
+
+if [ifword|func|[args]]
+/ifword：能够被判断的字符，必须是Python格式，注意数据类型
+/func：判断成功后用来执行的函数
+/args：作为func的参数，使用“,”或“、”分割（英文逗号、顿号）
+//判断一个条件，如果结果为True，则执行func函数
+
+input [title|ask|[valua]]
+/title：输入框的标题
+/ask：输入框的询问内容
+/valua：输入框内部的提示内容
+//出现一个窗口用来让使用者输入文本信息
+==如果有信息输入，则返回该信息；如果窗口被关闭或取消，则返回None字符
+
+list [name|list...]
+/name：列表名称
+/list：列表内容
+//创建列表。非全局变量，需要使用标准库 List 进行操作
+
+newver []
+//获得Tin的最新版本号
+==最新版本号
+
+pass [word...]
+/word：任何字符
+//注释，不解释
+
+print [chr...]
+/chr：要输出的内容
+//输出参数，如果参数有被赋值，则输出参数值
+==chr...
+
+py_eval [python_codes...]
+/python_codes：Python命令，可以调用TinShell全局变量表glo
+//允许直接使用Python代码，但是要注意缩进。
+//此外，可以导入库，但注意并不能导入所有标准库，已自动导入tk、ttk，可创建窗口
+//不要再行首出现 **[**]或有关TinShell的格式，否则解释器会执行TINC命令
+//py_eval不支持input等命令行命令，print不会自动换行
+
+pystr [word]
+/word：想要转化为Python字符串的内容
+//用于if函数以及Python调用，使内容转换更便捷
+==字符串类型
+
+readfile [file|[type]]
+/file：文件路径。必须是绝对路径
+/type：文件编码，可选。默认为utf-8
+//读取文件
+==文件内容
+
+require [tinc_file]
+/tinc_file：tinc拓展文件路径，不用加后缀名，直接从拓展文件夹名称开始，中间用“\”分开，文件名结束
+//导入tinc拓展，相当于执行一遍tinc文件，里面的函数均会被注册，可直接使用
+
+set [chr|valua]
+/chr：新的参数，在之后的命令中会被转换
+/valua：赋给 chr 的值，可以使命令
+//将往后的单个命令中用 valua 代替 chr
+
+stop [time]
+/time：暂停时间
+//这将阻塞TinShell一定的时间
+
+time []
+//系统时间
+==系统时间
+
+tinpaint [objects...]
+/objects：标签行。可以有多个参数，没有上限
+//渲染tin标记。不能或不建议使用<tkinter>标签。
+//当处于TinShell界面模式时，该函数无效。
+
+ver []
+//当前Tin版本
+==版本号
+
+window [id...]
+/id：要嵌入的窗口十进制句柄，可以使都可句柄，显示在同一个Frame中
+//将对应句柄的窗口嵌入到的TinShell中，便于操作。最好是win32应用而不是uwp应用
+
+writefile [file|words|encording|mode]
+/file：要写入的文件
+/words：要写入的内容
+/encording：文本编码格式
+/mode：写入内容。w：清空文件并写入；a：追加写入
+//这是一个简单的文件写入接口，具体操作可以使用 py_eval 函数

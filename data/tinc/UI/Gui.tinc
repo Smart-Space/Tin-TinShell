@@ -1,0 +1,46 @@
+/窗口基本操作
+/在tinc的使用中，可以直接使用pysimplegui和tkinter，在TinShell中使用 tk,ttk,tix,sg
+/win32gui同样可使用
+
+/head_function
+$ UI_GUI_INIT []{
+print [ui\gui.tinc]
+print [-FindWindow]
+print [-GetAllWindows]
+print [-WinApi]
+print [-]
+}
+
+/获取以title作为窗口名称的窗口句柄
+$ FindWindow [%title%]{
+py_eval[
+title='%title%'
+cid=str(win32gui.FindWindow(None,title))
+if cid=='0':
+    print('no such a window named "'+title+'"')
+else:
+    glo.update({'returnword':cid})
+]
+}
+
+/获取所有可视的窗口名称以及ID
+$ GetAllWindows []{
+py_eval[
+global hwnd_title
+hwnd_title={}
+def get_all_hwnd(hwnd,mouse):
+    global hwnd_title
+    if win32gui.IsWindow(hwnd) and win32gui.IsWindowEnabled(hwnd) and win32gui.IsWindowVisible(hwnd):
+        hwnd_title.update({hwnd:win32gui.GetWindowText(hwnd)})
+win32gui.EnumWindows(get_all_hwnd, 0)
+for h,t in hwnd_title.items():
+    if t is not "":
+        print(str(h)+'  '+t+'\n')
+]
+}
+
+$ WinGui[%name%|%option%]{
+py_eval[
+win32gui.%name%(%option%)
+]
+}

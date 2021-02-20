@@ -1,0 +1,20 @@
+/对字符进行制定替换
+
+/head_function
+$ WORD_CHANGE_INIT []{
+print [word\change.tinc]
+print [-ChangeWord]
+print [-]
+}
+
+
+/word为原始句段，chr为被替换字，cha为替换字
+$ ChangeWord [%word%|%chr%|%cha%]{
+py_eval[
+word='''%word%'''
+chr='%chr%'
+cha='%cha%'
+reword=word.replace(chr,cha)
+glo.update({'returnword':reword})
+]
+}

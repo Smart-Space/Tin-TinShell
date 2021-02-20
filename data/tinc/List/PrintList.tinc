@@ -1,0 +1,21 @@
+/显示列表
+
+/head_function
+$ LIST_PRINTLIST_INIT []{
+print [list\printlist.tinc]
+print [-PrintList]
+print [-]
+}
+
+
+$ PrintList [%listname%]{
+py_eval[
+lsn='%listname%'
+if lsn not in list_glo.keys():
+    error('\nthere is no list named '+lsn)
+else:
+    reword=list_glo.get(lsn)
+    print(str(reword))
+    #glo.update({'returnword':str(reword)})
+]
+}
