@@ -21,15 +21,25 @@ import time
 import datetime
 import subprocess
 import requests
+from urllib import request
 from tempfile import NamedTemporaryFile
-from Upgrader import find_up
 import win32gui
 import ctypes
 TinPath=os.path.split(os.path.abspath(argv[0]))[0]
 user32=ctypes.windll.user32
 
 version='2.2.9'#working---
-#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+ver='229'
+def find_up():#Tin-Shell使用
+    try:
+        up_ver=request.urlopen('https://smartspace5.coding.net/api/share/download/565548ed-010e-42f0-8ae2-de80a8af99ec').read()
+    except:
+        return 0
+    n_ver=''
+    for i in up_ver.decode():
+        n_ver=n_ver+str(i)+'.'
+    n_ver=n_ver[:-1]
+    return n_ver
 
 #返回值类型
 ReWord={
