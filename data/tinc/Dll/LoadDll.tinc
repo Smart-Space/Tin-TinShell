@@ -1,4 +1,4 @@
-/加载并使用dll
+/加载并使用dll，包括两个部分
 
 /head_function
 $ DLL_LOADDLL_INIT []{
