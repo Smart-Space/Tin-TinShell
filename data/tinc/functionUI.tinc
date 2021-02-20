@@ -29,6 +29,7 @@ cwg[flabel|tk.Label|fa|text='函数名及参数>>>',font=('微软雅黑',12)]
 uw[flabel|pack|side='left',anchor='n']
 
 cwg[fname|tk.Entry|fa|width=32,font=('微软雅黑',12),fg='darkblue']
+uw[fname|insert|0,'func_name [%option%]']
 uw[fname|pack|side='left',anchor='n']
 
 cwg[fbutton|ttk.Button|fa|text='定义']

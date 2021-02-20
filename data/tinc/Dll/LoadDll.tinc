@@ -1,0 +1,27 @@
+/加载并使用dll
+
+/head_function
+$ DLL_LOADDLL_INIT []{
+print [-loaddll]
+print [-usedll]
+print [-]
+}
+
+/载入dll
+$ loaddll [%name%|%dll_name%]{
+py_eval[
+name='%name%'
+dll_path=r'%dll_name%'
+dll_name=ctypes.cdll.LoadLibrary(dll_path)
+glo.update({'_dll_'+name:dll_name})
+]
+}
+
+/使用dll
+$ usedll [%name%|%method%|%option%]{
+py_eval[
+dll=glo.get('_dll_'+'%name%')
+reword=dll.%method%(%option%)
+glo.update({'returnword':str(reword)})
+]
+}
