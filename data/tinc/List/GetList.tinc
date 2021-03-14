@@ -5,6 +5,8 @@ $ LIST_GETLIST_INIT []{
 print [list\getlist.tinc]
 print [-GetListUnit]
 print [-GetList]
+print [-AddList]
+print [-SetList]
 print [-]
 }
 
@@ -40,5 +42,39 @@ else:
     else:
         reword=li[num]
         glo.update({'returnword':reword})
+]
+}
+
+/合并列表
+/new: 新的列表名称
+/list1: 第一个列表
+/list2: 第二个列表
+$ AddList [%new%|%list1%|%list2%]{
+py_eval[
+li1='%list1%'
+li2='%list2%'
+new='%new%'
+if li1 not in list_glo.keys():
+    error('\nthere is no list named '+li1)
+else:
+    l1=list_glo.get(li1)
+if li2 not in list_glo.keys():
+    error('\nthere is no list named '+li2)
+else:
+    l2=list_glo.get(li2)
+list_glo.update({new:l1+l2})
+]
+}
+
+/列表去重
+/name: 列表名称
+$ SetList [%name%]{
+py_eval[
+name='%name%'
+if name not in list_glo.keys():
+    error('\nthere is no list named '+name)
+else:
+    li=list_glo.get(name)
+list_glo.update({name:list(set(li))})
 ]
 }
