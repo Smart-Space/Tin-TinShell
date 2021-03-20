@@ -217,7 +217,7 @@ ver []
 ==版本号
 
 window [id...]
-/id：要嵌入的窗口十进制句柄，可以使都可句柄，显示在同一个Frame中
+/id：要嵌入的窗口十进制句柄，可以使句柄对应的所有窗口显示在同一个Frame中
 //将对应句柄的窗口嵌入到的TinShell中，便于操作。最好是win32应用而不是uwp应用
 
 writefile [file|words|encording|mode]
