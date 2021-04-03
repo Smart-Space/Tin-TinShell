@@ -161,7 +161,7 @@ list [name|list...]
 
 newver []
 //获得Tin的最新版本号
-==最新版本号
+==获取远程知识库，得到最新版本号
 
 pass [word...]
 /word：任何字符
